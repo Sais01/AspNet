@@ -29,5 +29,42 @@ namespace ControleContatos.Repositorio
             _bancoContext.SaveChanges();
             return contato;
         }
+
+        public ContatoModel Atualizar(ContatoModel contato)
+        {
+            ContatoModel contatoDB = ListaPorId(contato.Id);
+
+            if (contatoDB == null) {
+                throw new Exception("Houve um erro na atualização do contato");
+            }
+            else
+            {
+                contatoDB.Nome = contato.Nome;
+                contatoDB.Email = contato.Email;
+                contatoDB.Celular = contato.Celular;
+
+                _bancoContext.Contatos.Update(contatoDB);
+                _bancoContext.SaveChanges();
+
+                return contatoDB;
+            }
+
+        }
+
+        public bool Apagar(int id)
+        {
+            ContatoModel contatoDB = ListaPorId(id);
+
+            if (contatoDB == null)
+            {
+                throw new Exception("Houve um erro na atualização do contato");
+            }
+            else
+            {
+                _bancoContext.Contatos.Remove(contatoDB);
+                _bancoContext.SaveChanges();
+                return true;
+            }
+        }
     }
 }
